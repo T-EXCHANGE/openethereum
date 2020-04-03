@@ -287,6 +287,9 @@ pub trait BlockChainClient:
 	/// Get transaction with given hash.
 	fn transaction(&self, id: TransactionId) -> Option<LocalizedTransaction>;
 
+	/// Get pool transaction with a given hash.
+	fn pooled_transaction(&self, hash: H256) -> Option<Arc<VerifiedTransaction>>;
+
 	/// Get uncle with given id.
 	fn uncle(&self, id: UncleId) -> Option<encoded::Header>;
 

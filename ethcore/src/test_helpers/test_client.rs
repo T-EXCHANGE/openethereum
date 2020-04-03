@@ -740,6 +740,9 @@ impl BlockChainClient for TestBlockChainClient {
 	fn transaction(&self, _id: TransactionId) -> Option<LocalizedTransaction> {
 		None	// Simple default.
 	}
+	fn pooled_transaction(&self, _hash: H256) -> Option<Arc<VerifiedTransaction>> {
+		None
+	}
 
 	fn uncle(&self, _id: UncleId) -> Option<encoded::Header> {
 		None	// Simple default.

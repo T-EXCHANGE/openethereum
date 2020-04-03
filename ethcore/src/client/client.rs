@@ -1902,6 +1902,10 @@ impl BlockChainClient for Client {
 		self.transaction_address(id).and_then(|address| self.chain.read().transaction(&address))
 	}
 
+	fn pooled_transaction(&self, hash: H256) -> Option<Arc<VerifiedTransaction>> {
+		self.importer.miner.transaction(&hash)
+	}
+
 	fn uncle(&self, id: UncleId) -> Option<encoded::Header> {
 		let index = id.position;
 		self.block_body(id.block).and_then(|body| body.view().uncle_rlp_at(index))
