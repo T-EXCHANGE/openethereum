@@ -1898,7 +1898,7 @@ impl BlockChainClient for Client {
 		Some(keys)
 	}
 
-	fn transaction(&self, id: TransactionId) -> Option<LocalizedTransaction> {
+	fn block_transaction(&self, id: TransactionId) -> Option<LocalizedTransaction> {
 		self.transaction_address(id).and_then(|address| self.chain.read().transaction(&address))
 	}
 
