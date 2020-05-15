@@ -740,7 +740,7 @@ impl BlockChainClient for TestBlockChainClient {
 	fn block_transaction(&self, _id: TransactionId) -> Option<LocalizedTransaction> {
 		None	// Simple default.
 	}
-	fn pooled_transaction(&self, _hash: H256) -> Option<Arc<VerifiedTransaction>> {
+	fn queued_transaction(&self, _hash: H256) -> Option<Arc<VerifiedTransaction>> {
 		None
 	}
 

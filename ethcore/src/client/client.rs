@@ -1902,7 +1902,7 @@ impl BlockChainClient for Client {
 		self.transaction_address(id).and_then(|address| self.chain.read().transaction(&address))
 	}
 
-	fn pooled_transaction(&self, hash: H256) -> Option<Arc<VerifiedTransaction>> {
+	fn queued_transaction(&self, hash: H256) -> Option<Arc<VerifiedTransaction>> {
 		self.importer.miner.transaction(&hash)
 	}
 

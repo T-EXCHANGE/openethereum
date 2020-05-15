@@ -257,7 +257,7 @@ impl SyncSupplier {
 		const LIMIT: usize = 256;
 
 		let transactions = r.iter().take(LIMIT).filter_map(|v| {
-			v.as_val::<H256>().ok().and_then(|hash| io.chain().pooled_transaction(hash))
+			v.as_val::<H256>().ok().and_then(|hash| io.chain().queued_transaction(hash))
 		}).collect::<Vec<_>>();
 
 		let added = transactions.len();

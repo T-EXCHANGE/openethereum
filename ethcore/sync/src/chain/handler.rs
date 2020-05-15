@@ -711,7 +711,7 @@ impl SyncHandler {
 		for item in tx_rlp {
 			let hash = item.as_val::<H256>().map_err(|_| DownloaderImportError::Invalid)?;
 
-			if io.chain().pooled_transaction(hash).is_none() {
+			if io.chain().queued_transaction(hash).is_none() {
 				let unfetched = sync.unfetched_pooled_transactions.entry(hash).or_insert_with(|| super::UnfetchedTransaction {
 					announcer: peer_id,
 					next_fetch: Instant::now(),
