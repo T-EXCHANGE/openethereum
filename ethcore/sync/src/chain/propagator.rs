@@ -91,19 +91,23 @@ impl SyncPropagator {
 		sent
 	}
 
-	/// propagate new known pool hashes to all peers
-	pub fn propagate_new_pooled_tx_hashes(sync: &mut ChainSync, io: &mut dyn SyncIo) -> usize {
-		/// Recommended limit from the spec.
-		const LIMIT: usize = 4096;
+	/// propagates new transactions to all peers
+	pub fn propagate_new_transactions<F: FnMut() -> bool>(sync: &mut ChainSync, io: &mut dyn SyncIo, mut should_continue: F) -> usize {
+		const NEW_POOLED_HASHES_LIMIT: usize = 4096;
 
+		// Early out if nobody to send to.
+		if sync.peers.is_empty() {
+			return 0;
+		}
+
+		// propagate just hashes to newer peers
 		trace!(target: "sync", "Sending NewPooledTransactionsHashes to {:?}", sync.peers.keys());
-		let mut affected_peers = 0;
 		for (peer_id, peer) in &mut sync.peers {
 			let mut affected = false;
 			let mut packet = RlpStream::new();
 			packet.begin_unbounded_list();
 			if let Some(s) = &mut peer.unsent_pooled_hashes {
-				for item in s.drain().take(LIMIT) {
+				for item in s.drain().take(NEW_POOLED_HASHES_LIMIT) {
 					affected = true;
 					packet.append(&item);
 				}
@@ -113,22 +117,8 @@ impl SyncPropagator {
 				packet.finalize_unbounded_list();
 
 				SyncPropagator::send_packet(io, *peer_id, NewPooledTransactionHashesPacket, packet.out());
-				affected_peers += 1;
 			}
 		}
-
-		affected_peers
-	}
-
-	/// propagates new transactions to all peers
-	pub fn propagate_new_transactions<F: FnMut() -> bool>(sync: &mut ChainSync, io: &mut dyn SyncIo, mut should_continue: F) -> usize {
-		// Early out if nobody to send to.
-		if sync.peers.is_empty() {
-			return 0;
-		}
-
-		// propagate just hashes to newer peers
-		SyncPropagator::propagate_new_pooled_tx_hashes(sync, io);
 
 		let transactions = io.chain().transactions_to_propagate();
 		if transactions.is_empty() {
