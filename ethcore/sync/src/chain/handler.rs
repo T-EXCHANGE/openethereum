@@ -706,7 +706,7 @@ impl SyncHandler {
 		Ok(())
 	}
 
-	/// Called when peer requests a set of pooled transactions
+	/// Called when peer sends us a set of new pooled transactions
 	pub fn on_peer_new_pooled_transactions(sync: &mut ChainSync, io: &mut dyn SyncIo, peer_id: PeerId, tx_rlp: &Rlp) -> Result<(), DownloaderImportError> {
 		for item in tx_rlp {
 			let hash = item.as_val::<H256>().map_err(|_| DownloaderImportError::Invalid)?;
