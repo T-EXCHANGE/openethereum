@@ -19,6 +19,7 @@
 /// Definition of schedules that can be applied to a version.
 #[derive(Debug)]
 pub enum VersionedSchedule {
+	#[allow(dead_code)]
 	PWasm,
 }
 
