@@ -564,7 +564,7 @@ impl ImportBlock for TestBlockChainClient {
 				let mut difficulty = self.difficulty.write();
 				*difficulty = *difficulty + header.difficulty().clone();
 			}
-			mem::replace(&mut *self.last_hash.write(), h.clone());
+			let _ = mem::replace(&mut *self.last_hash.write(), h.clone());
 			self.blocks.write().insert(h.clone(), unverified.bytes);
 			self.numbers.write().insert(number, h.clone());
 			let mut parent_hash = header.parent_hash().clone();

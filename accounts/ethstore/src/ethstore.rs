@@ -346,7 +346,7 @@ impl EthMultiStore {
 			}
 		}
 
-		mem::replace(&mut *cache, new_accounts);
+		let _ = mem::replace(&mut *cache, new_accounts);
 		Ok(())
 	}
 
