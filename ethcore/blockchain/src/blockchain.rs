@@ -1619,11 +1619,11 @@ mod tests {
 		_trace_blooms_dir: TempDir,
 		blooms: blooms_db::Database,
 		trace_blooms: blooms_db::Database,
-		key_value: Arc<KeyValueDB>,
+		key_value: Arc<dyn KeyValueDB>,
 	}
 
 	impl BlockChainDB for TestBlockChainDB {
-		fn key_value(&self) -> &Arc<KeyValueDB> {
+		fn key_value(&self) -> &Arc<dyn KeyValueDB> {
 			&self.key_value
 		}
 
@@ -1637,7 +1637,7 @@ mod tests {
 	}
 
 	/// Creates new test instance of `BlockChainDB`
-	pub fn new_db() -> Arc<BlockChainDB> {
+	pub fn new_db() -> Arc<dyn BlockChainDB> {
 		let blooms_dir = TempDir::new("").unwrap();
 		let trace_blooms_dir = TempDir::new("").unwrap();
 
@@ -1652,15 +1652,15 @@ mod tests {
 		Arc::new(db)
 	}
 
-	fn new_chain(genesis: encoded::Block, db: Arc<BlockChainDB>) -> BlockChain {
+	fn new_chain(genesis: encoded::Block, db: Arc<dyn BlockChainDB>) -> BlockChain {
 		BlockChain::new(Config::default(), genesis.raw(), db)
 	}
 
-	fn insert_block(db: &Arc<BlockChainDB>, bc: &BlockChain, block: encoded::Block, receipts: Vec<Receipt>) -> ImportRoute {
+	fn insert_block(db: &Arc<dyn BlockChainDB>, bc: &BlockChain, block: encoded::Block, receipts: Vec<Receipt>) -> ImportRoute {
 		insert_block_commit(db, bc, block, receipts, true)
 	}
 
-	fn insert_block_commit(db: &Arc<BlockChainDB>, bc: &BlockChain, block: encoded::Block, receipts: Vec<Receipt>, commit: bool) -> ImportRoute {
+	fn insert_block_commit(db: &Arc<dyn BlockChainDB>, bc: &BlockChain, block: encoded::Block, receipts: Vec<Receipt>, commit: bool) -> ImportRoute {
 		let mut batch = db.key_value().transaction();
 		let res = insert_block_batch(&mut batch, bc, block, receipts);
 		db.key_value().write(batch).unwrap();
@@ -1671,8 +1671,6 @@ mod tests {
 	}
 
 	fn insert_block_batch(batch: &mut DBTransaction, bc: &BlockChain, block: encoded::Block, receipts: Vec<Receipt>) -> ImportRoute {
-		use crate::ExtrasInsert;
-
 		let fork_choice = {
 			let header = block.header_view();
 			let parent_hash = header.parent_hash();

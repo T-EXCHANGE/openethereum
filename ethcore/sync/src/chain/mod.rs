@@ -1420,7 +1420,7 @@ pub mod tests {
 		assert!(!sync_status(SyncState::Idle).is_syncing(queue_info(0, 0)));
 	}
 
-	pub fn dummy_sync_with_peer(peer_latest_hash: H256, client: &BlockChainClient) -> ChainSync {
+	pub fn dummy_sync_with_peer(peer_latest_hash: H256, client: &dyn BlockChainClient) -> ChainSync {
 		let mut sync = ChainSync::new(SyncConfig::default(), client, None);
 		insert_dummy_peer(&mut sync, 0, peer_latest_hash);
 		sync
@@ -1539,7 +1539,7 @@ pub mod tests {
 		// Add some balance to clients and reset nonces
 		for h in &[good_blocks[0], retracted_blocks[0]] {
 			let block = client.block(BlockId::Hash(*h)).unwrap();
-			let sender = sender(&block.transactions()[0]);;
+			let sender = sender(&block.transactions()[0]);
 			client.set_balance(sender, U256::from(10_000_000_000_000_000_000u64));
 			client.set_nonce(sender, U256::from(0));
 		}

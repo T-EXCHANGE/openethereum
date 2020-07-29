@@ -84,7 +84,7 @@ pub struct AccountDB<'db> {
 impl<'db> AccountDB<'db> {
 	/// Create a new AccountDB from an address.
 	#[cfg(test)]
-	pub fn new(db: &'db HashDB<KeccakHasher, DBValue>, address: &Address) -> Self {
+	pub fn new(db: &'db dyn HashDB<KeccakHasher, DBValue>, address: &Address) -> Self {
 		Self::from_hash(db, keccak(address))
 	}
 
@@ -139,7 +139,7 @@ pub struct AccountDBMut<'db> {
 impl<'db> AccountDBMut<'db> {
 	/// Create a new AccountDB from an address.
 	#[cfg(test)]
-	pub fn new(db: &'db mut HashDB<KeccakHasher, DBValue>, address: &Address) -> Self {
+	pub fn new(db: &'db mut dyn HashDB<KeccakHasher, DBValue>, address: &Address) -> Self {
 		Self::from_hash(db, keccak(address))
 	}
 

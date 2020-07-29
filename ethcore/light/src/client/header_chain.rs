@@ -873,7 +873,7 @@ mod tests {
 	use std::time::Duration;
 	use parking_lot::Mutex;
 
-	fn make_db() -> Arc<KeyValueDB> {
+	fn make_db() -> Arc<dyn KeyValueDB> {
 		Arc::new(kvdb_memorydb::create(0))
 	}
 

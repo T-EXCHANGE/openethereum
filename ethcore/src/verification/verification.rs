@@ -516,12 +516,12 @@ mod tests {
 		}
 	}
 
-	fn basic_test(bytes: &[u8], engine: &EthEngine) -> Result<(), Error> {
+	fn basic_test(bytes: &[u8], engine: &dyn EthEngine) -> Result<(), Error> {
 		let unverified = Unverified::from_rlp(bytes.to_vec())?;
 		verify_block_basic(&unverified, engine, true)
 	}
 
-	fn family_test<BC>(bytes: &[u8], engine: &EthEngine, bc: &BC) -> Result<(), Error> where BC: BlockProvider {
+	fn family_test<BC>(bytes: &[u8], engine: &dyn EthEngine, bc: &BC) -> Result<(), Error> where BC: BlockProvider {
 		let block = Unverified::from_rlp(bytes.to_vec()).unwrap();
 		let header = block.header;
 		let transactions: Vec<_> = block.transactions
@@ -547,13 +547,13 @@ mod tests {
 
 		let full_params = FullFamilyParams {
 			block: &block,
-			block_provider: bc as &BlockProvider,
+			block_provider: bc as &dyn BlockProvider,
 			client: &client,
 		};
 		verify_block_family(&block.header, &parent, engine, Some(full_params))
 	}
 
-	fn unordered_test(bytes: &[u8], engine: &EthEngine) -> Result<(), Error> {
+	fn unordered_test(bytes: &[u8], engine: &dyn EthEngine) -> Result<(), Error> {
 		let un = Unverified::from_rlp(bytes.to_vec())?;
 		verify_block_unordered(un, engine, false)?;
 		Ok(())

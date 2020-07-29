@@ -172,10 +172,10 @@ pub struct Clique {
 	pub epoch_length: u64,
 	pub period: u64,
 	pub machine: EthereumMachine,
-	pub client: RwLock<Option<Weak<EngineClient>>>,
+	pub client: RwLock<Option<Weak<dyn EngineClient>>>,
 	pub block_state_by_hash: RwLock<LruCache<H256, CliqueBlockState>>,
 	pub proposals: RwLock<HashMap<Address, VoteType>>,
-	pub signer: RwLock<Option<Box<EngineSigner>>>,
+	pub signer: RwLock<Option<Box<dyn EngineSigner>>>,
 }
 
 impl Clique {

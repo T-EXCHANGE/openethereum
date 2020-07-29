@@ -659,7 +659,7 @@ mod tests {
 		Transaction::default().sign(keypair.secret(), None)
 	}
 
-	fn import_headers(headers: &[BlockHeader], downloader: &mut BlockDownloader, io: &mut SyncIo) -> Result<DownloadAction, BlockDownloaderImportError> {
+	fn import_headers(headers: &[BlockHeader], downloader: &mut BlockDownloader, io: &mut dyn SyncIo) -> Result<DownloadAction, BlockDownloaderImportError> {
 		let mut stream = RlpStream::new();
 		stream.append_list(headers);
 		let bytes = stream.out();
@@ -668,7 +668,7 @@ mod tests {
 		downloader.import_headers(io, &rlp, expected_hash)
 	}
 
-	fn import_headers_ok(headers: &[BlockHeader], downloader: &mut BlockDownloader, io: &mut SyncIo) {
+	fn import_headers_ok(headers: &[BlockHeader], downloader: &mut BlockDownloader, io: &mut dyn SyncIo) {
 		let res = import_headers(headers, downloader, io);
 		assert!(res.is_ok());
 	}
@@ -810,13 +810,13 @@ mod tests {
 		let mut parent_hash = H256::zero();
 		for i in 0..4 {
 			// Construct the block body
-			let mut uncles = if i > 0 {
+			let uncles = if i > 0 {
 				encode_list(&[dummy_header(i - 1, H256::random())])
 			} else {
 				::rlp::EMPTY_LIST_RLP.to_vec()
 			};
 
-			let mut txs = encode_list(&[dummy_signed_tx()]);
+			let txs = encode_list(&[dummy_signed_tx()]);
 			let tx_root = ordered_trie_root(Rlp::new(&txs).iter().map(|r| r.as_raw()));
 
 			let mut rlp = RlpStream::new_list(2);
@@ -881,7 +881,7 @@ mod tests {
 			//
 			// The RLP-encoded integers are clearly not receipts, but the BlockDownloader treats
 			// all receipts as byte blobs, so it does not matter.
-			let mut receipts_rlp = if i < 2 {
+			let receipts_rlp = if i < 2 {
 				encode_list(&[0u32])
 			} else {
 				encode_list(&[i as u32])

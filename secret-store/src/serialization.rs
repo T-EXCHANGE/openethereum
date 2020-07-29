@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Parity Ethereum.  If not, see <http://www.gnu.org/licenses/>.
 
+
 use std::fmt;
 use std::ops::Deref;
 use rustc_hex::{ToHex, FromHex};
@@ -101,17 +102,17 @@ pub type SerializableMessageHash = SerializableH256;
 /// Serializable address;
 pub type SerializableAddress = SerializableH160;
 
-/// Serializable Bytes.
+// Serializable Bytes.
 impl_bytes!(SerializableBytes, Bytes, true, (Default));
-/// Serializable H256.
+// Serializable H256.
 impl_bytes!(SerializableH256, H256, false, (Default, PartialOrd, Ord));
-/// Serializable H160.
+// Serializable H160.
 impl_bytes!(SerializableH160, H160, false, (Default));
-/// Serializable H512 (aka Public).
+// Serializable H512 (aka Public).
 impl_bytes!(SerializablePublic, Public, false, (Default, PartialOrd, Ord));
-/// Serializable Secret.
+// Serializable Secret.
 impl_bytes!(SerializableSecret, Secret, false, ());
-/// Serializable Signature.
+// Serializable Signature.
 impl_bytes!(SerializableSignature, Signature, false, ());
 
 /// Serializable shadow decryption result.

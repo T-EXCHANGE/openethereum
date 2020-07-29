@@ -118,9 +118,9 @@ extern crate blooms_db;
 extern crate env_logger;
 #[cfg(test)]
 extern crate rlp_compress;
-#[cfg(test)]
-#[macro_use]
-extern crate hex_literal;
+
+#[cfg(any(test, feature="json-tests"))]
+extern crate kvdb_memorydb;
 
 #[macro_use]
 extern crate ethabi_derive;

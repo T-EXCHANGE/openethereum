@@ -82,7 +82,7 @@ struct SessionCore<T: SessionTransport> {
 	/// Key share.
 	pub key_share: Option<DocumentKeyShare>,
 	/// Session result computer.
-	pub result_computer: Arc<SessionResultComputer>,
+	pub result_computer: Arc<dyn SessionResultComputer>,
 	/// Session transport.
 	pub transport: T,
 	/// Session nonce.
@@ -118,7 +118,7 @@ pub struct SessionParams<T: SessionTransport> {
 	/// Key share.
 	pub key_share: Option<DocumentKeyShare>,
 	/// Session result computer.
-	pub result_computer: Arc<SessionResultComputer>,
+	pub result_computer: Arc<dyn SessionResultComputer>,
 	/// Session transport to communicate to other cluster nodes.
 	pub transport: T,
 	/// Session nonce.
@@ -139,7 +139,7 @@ enum SessionState {
 /// Isolated session transport.
 pub struct IsolatedSessionTransport {
 	/// Cluster.
-	pub cluster: Arc<Cluster>,
+	pub cluster: Arc<dyn Cluster>,
 	/// Key id.
 	pub key_id: SessionId,
 	/// Sub session id.
@@ -612,7 +612,7 @@ impl SessionResultComputer for LargestSupportResultComputer {
 mod tests {
 	use std::sync::Arc;
 	use std::collections::{VecDeque, BTreeMap, BTreeSet};
-	use ethereum_types::{H512, H160, Address};
+	use ethereum_types::{H512, H160};
 	use ethkey::public_to_address;
 	use key_server_cluster::{NodeId, SessionId, Error, KeyStorage, DummyKeyStorage,
 		DocumentKeyShare, DocumentKeyShareVersion};

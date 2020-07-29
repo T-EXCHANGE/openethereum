@@ -1858,14 +1858,14 @@ mod tests {
 		(spec, tap, accounts)
 	}
 
-	fn empty_step(engine: &EthEngine, step: u64, parent_hash: &H256) -> EmptyStep {
+	fn empty_step(engine: &dyn EthEngine, step: u64, parent_hash: &H256) -> EmptyStep {
 		let empty_step_rlp = super::empty_step_rlp(step, parent_hash);
 		let signature = engine.sign(keccak(&empty_step_rlp)).unwrap().into();
 		let parent_hash = parent_hash.clone();
 		EmptyStep { step, signature, parent_hash }
 	}
 
-	fn sealed_empty_step(engine: &EthEngine, step: u64, parent_hash: &H256) -> SealedEmptyStep {
+	fn sealed_empty_step(engine: &dyn EthEngine, step: u64, parent_hash: &H256) -> SealedEmptyStep {
 		let empty_step_rlp = super::empty_step_rlp(step, parent_hash);
 		let signature = engine.sign(keccak(&empty_step_rlp)).unwrap().into();
 		SealedEmptyStep { signature, step }

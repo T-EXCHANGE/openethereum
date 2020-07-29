@@ -215,7 +215,7 @@ mod tests {
 	fn transition_to_fixed_list_instant() {
 		use super::super::SimpleList;
 
-		let mut map: BTreeMap<_, Box<ValidatorSet>> = BTreeMap::new();
+		let mut map: BTreeMap<_, Box<dyn ValidatorSet>> = BTreeMap::new();
 		let list1: Vec<_> = (0..10).map(|_| Address::random()).collect();
 		let list2 = {
 			let mut list = list1.clone();

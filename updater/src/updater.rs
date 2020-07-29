@@ -743,7 +743,7 @@ pub mod tests {
 
 	#[derive(Clone)]
 	struct FakeFetch {
-		on_done: Arc<Mutex<Option<Box<Fn(Result<PathBuf, Error>) + Send>>>>,
+		on_done: Arc<Mutex<Option<Box<dyn Fn(Result<PathBuf, Error>) + Send>>>>,
 	}
 
 	impl FakeFetch {
@@ -759,7 +759,7 @@ pub mod tests {
 	}
 
 	impl HashFetch for FakeFetch {
-		fn fetch(&self, _hash: H256, _abort: fetch::Abort, on_done: Box<Fn(Result<PathBuf, Error>) + Send>) {
+		fn fetch(&self, _hash: H256, _abort: fetch::Abort, on_done: Box<dyn Fn(Result<PathBuf, Error>) + Send>) {
 			*self.on_done.lock() = Some(on_done);
 		}
 	}

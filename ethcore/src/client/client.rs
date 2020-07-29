@@ -2810,7 +2810,7 @@ impl IoChannelQueue {
 
 #[cfg(test)]
 mod tests {
-	use test_helpers::{generate_dummy_client, generate_dummy_client_with_data, generate_dummy_client_with_spec_and_data, get_good_dummy_block_hash};
+	use test_helpers::{generate_dummy_client_with_spec_and_data};
 	use blockchain::{BlockProvider, ExtrasInsert};
 	use spec::Spec;
 

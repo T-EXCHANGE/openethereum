@@ -570,7 +570,7 @@ mod tests {
 	/// Enact the block given by `block_bytes` using `engine` on the database `db` with given `parent` block header
 	fn enact_bytes(
 		block_bytes: Vec<u8>,
-		engine: &EthEngine,
+		engine: &dyn EthEngine,
 		tracing: bool,
 		db: StateDB,
 		parent: &Header,
@@ -623,7 +623,7 @@ mod tests {
 	/// Enact the block given by `block_bytes` using `engine` on the database `db` with given `parent` block header. Seal the block aferwards
 	fn enact_and_seal(
 		block_bytes: Vec<u8>,
-		engine: &EthEngine,
+		engine: &dyn EthEngine,
 		tracing: bool,
 		db: StateDB,
 		parent: &Header,
