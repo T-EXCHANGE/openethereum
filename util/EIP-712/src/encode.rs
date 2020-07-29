@@ -41,6 +41,7 @@ fn check_hex(string: &str) -> Result<()> {
 }
 /// given a type and HashMap<String, Vec<FieldType>>
 /// returns a HashSet of dependent types of the given type
+#[allow(unused_parens)]
 fn build_dependencies<'a>(message_type: &'a str, message_types: &'a MessageTypes) -> Option<(HashSet<&'a str>)>
 {
 	if message_types.get(message_type).is_none() {

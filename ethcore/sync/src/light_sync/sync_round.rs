@@ -172,6 +172,7 @@ impl Fetcher {
 		trace!(target: "sync", "{} headers ready to drain", self.ready.len());
 	}
 
+	#[allow(unused_parens)]
 	fn process_response<R: ResponseContext>(mut self, ctx: &R) -> SyncRound {
 		let mut request = match self.pending.remove(ctx.req_id()) {
 			Some(request) => request,

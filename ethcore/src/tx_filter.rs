@@ -47,6 +47,7 @@ pub struct TransactionFilter {
 	contract_address: Address,
 	transition_block: BlockNumber,
 	permission_cache: Mutex<LruCache<(H256, Address), u32>>,
+	#[allow(unused_parens)]
 	contract_version_cache: Mutex<LruCache<(H256), Option<U256>>>
 }
 
