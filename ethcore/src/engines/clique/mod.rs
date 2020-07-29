@@ -161,10 +161,10 @@ pub struct Clique {
 	epoch_length: u64,
 	period: u64,
 	machine: EthereumMachine,
-	client: RwLock<Option<Weak<EngineClient>>>,
+	client: RwLock<Option<Weak<dyn EngineClient>>>,
 	block_state_by_hash: RwLock<LruCache<H256, CliqueBlockState>>,
 	proposals: RwLock<HashMap<Address, VoteType>>,
-	signer: RwLock<Option<Box<EngineSigner>>>,
+	signer: RwLock<Option<Box<dyn EngineSigner>>>,
 }
 
 #[cfg(test)]
@@ -370,7 +370,7 @@ impl Engine<EthereumMachine> for Clique {
 		&self,
 		_block: &mut ExecutedBlock,
 		_epoch_begin: bool,
-		_ancestry: &mut Iterator<Item=ExtendedHeader>,
+		_ancestry: &mut dyn Iterator<Item=ExtendedHeader>,
 	) -> Result<(), Error> {
 		Ok(())
 	}
@@ -736,12 +736,12 @@ impl Engine<EthereumMachine> for Clique {
 		}
 	}
 
-	fn set_signer(&self, signer: Box<EngineSigner>) {
+	fn set_signer(&self, signer: Box<dyn EngineSigner>) {
 		trace!(target: "engine", "set_signer: {}", signer.address());
 		*self.signer.write() = Some(signer);
 	}
 
-	fn register_client(&self, client: Weak<EngineClient>) {
+	fn register_client(&self, client: Weak<dyn EngineClient>) {
 		*self.client.write() = Some(client.clone());
 	}
 

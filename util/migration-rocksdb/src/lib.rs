@@ -209,7 +209,7 @@ impl TempIndex {
 /// Manages database migration.
 pub struct Manager {
 	config: Config,
-	migrations: Vec<Box<Migration>>,
+	migrations: Vec<Box<dyn Migration>>,
 }
 
 impl Manager {
@@ -317,7 +317,7 @@ impl Manager {
 	}
 
 	/// Find all needed migrations.
-	fn migrations_from(&mut self, version: u32) -> Vec<&mut Box<Migration>> {
+	fn migrations_from(&mut self, version: u32) -> Vec<&mut Box<dyn Migration>> {
 		self.migrations.iter_mut().filter(|m| m.version() > version).collect()
 	}
 }
